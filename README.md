@@ -5,9 +5,9 @@ This repository is dedicated to one of my computer vision projects for COVID-19.
 An application consists of the Interface and Logic. Both components have two parts - responsible for movement of the coursor and its click/push. 
 
 To run the program simply write:
-'''
+```
 python Touchless_Screen.py
-'''
+```
 
 Initial interface should look like this:
 <img width="1272" alt="Touchless_Screen_Interface" src="https://user-images.githubusercontent.com/18334850/124047314-35b22300-da14-11eb-8541-6e011dd8cacb.png">
