@@ -12,5 +12,9 @@ python Touchless_Screen.py
 Initial interface should look like this:
 <img width="1272" alt="Touchless_Screen_Interface" src="https://user-images.githubusercontent.com/18334850/124047314-35b22300-da14-11eb-8541-6e011dd8cacb.png">
 
+Holding a marker shows on the screen:
+Touchless_Screen_Interface_1![image](https://user-images.githubusercontent.com/18334850/124361233-4a6a0300-dc2e-11eb-9cb4-24f0223c3a15.png)
+
+
 Actual control happens with the marker of a given color. Based on its color and threshold value (given by a user/developer), one can start controling the coursor's movement and clicking functionalities. 
 
