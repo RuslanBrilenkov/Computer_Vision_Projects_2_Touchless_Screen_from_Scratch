@@ -38,12 +38,40 @@ while True:
 	
 	hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	threshold = cv2.inRange(hsv, ColorMin, ColorMax)
+	contours, hierarchy = cv2.findContours(threshold, 1, 2)
 	
 	result = cv2.bitwise_and(frame, frame, mask = threshold)
 
 	### Meat of the program is here   ###
-	#
-	#
+	try:
+		max_area = 0
+		last_x = centroid_x
+		last_y = centroid_y
+
+		if contours:
+			for i in contours:
+				area = cv2.contourArea(i)
+				if area > max_area:
+					max_area = area
+					cnt = i
+		#print(last_x, last_y, area)
+		x,y,w,h = cv2.boundingRect(cnt)
+		cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+	
+		centroid_x = (x + x+w)//2
+		centroid_y = (y + y+h)//2
+
+		cv2.circle(result, (centroid_x, centroid_y), 2, (0,0,255), 10)
+	
+		# Check if the centroid is withing the left half of the screen
+		if (centroid_x >= 0)and(centroid_x <= int(width/2))and(centroid_y >= 0) and (centroid_y <= int(height)):
+			print("Cursor is at the left side")
+		else:
+			print("Cursor is at the right side")
+	
+	except Exception as e:
+		print(e)
+	
 	###				###
 	
 	# Drawing helpful regions on the video for the use-friendly intuitive use
