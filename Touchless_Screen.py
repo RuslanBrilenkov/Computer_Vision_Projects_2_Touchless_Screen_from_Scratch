@@ -7,15 +7,14 @@ print("Imports are Done!")
 cap = cv2.VideoCapture(0)
 
 # ! Need to explore these colours in the interactive manner - personal choice!
-ColorMin = np.array([155, 118, 100], dtype=np.uint8)
-ColorMax = np.array([179, 255, 255], dtype=np.uint8)
+# In my case, I have a green marker:
+ColorMin = np.array([35, 160, 0], dtype=np.uint8)
+ColorMax = np.array([85, 255, 255], dtype=np.uint8)
 
 # Defining centroid coordinates
 centroid_x, centroid_y = 0, 0
-
 # Defining the text font
 font = cv2.FONT_HERSHEY_SIMPLEX
-
 # Defining some helpful variables
 rect_size = 100
 frame_color = (0,255, 0)
@@ -31,8 +30,11 @@ while True:
 	width, height  = cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT) # float, float
 	ret, frame = cap.read()
 	
+	
 	# Flipping image for our own convenience
-	img = cv2.flip(frame, 1)
+	frame = cv2.flip(frame, 1)
+	# Copying our frame into another variable
+	img = frame
 	
 	hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	threshold = cv2.inRange(hsv, ColorMin, ColorMax)
@@ -61,6 +63,7 @@ while True:
 	cv2.rectangle(result, (0,0), (int(width/2),int(height)), frame_color, 1)
 	cv2.putText(result, "CLICK", (int(width*3//4-rect_size), int(height//2)), font, 2, frame_color, 3, cv2.LINE_AA) # adding text label for instructions
 	
+	# Showing the thresholded frame on the screen
 	cv2.imshow('result', result)
 	
 	# Breaking the cycle on ESC key
