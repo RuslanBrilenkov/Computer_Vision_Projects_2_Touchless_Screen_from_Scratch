@@ -18,3 +18,6 @@ Holding a marker shows on the screen:
 
 Actual control happens with the marker of a given color. Based on its color and threshold value (given by a user/developer), one can start controling the coursor's movement and clicking functionalities. 
 
+A short animation representing the cursor movement:
+![Touchless_Screen_Cursor_Movement4](https://user-images.githubusercontent.com/18334850/124370691-b07c7780-dc7a-11eb-8a1f-1263744af035.gif)
+
