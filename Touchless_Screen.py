@@ -56,7 +56,7 @@ while True:
 					cnt = i
 		#print(last_x, last_y, area)
 		x,y,w,h = cv2.boundingRect(cnt)
-		cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+		cv2.rectangle(result, (x,y), (x+w,y+h), (0,0,255), 5)
 	
 		centroid_x = (x + x+w)//2
 		centroid_y = (y + y+h)//2
@@ -66,6 +66,49 @@ while True:
 		# Check if the centroid is withing the left half of the screen
 		if (centroid_x >= 0)and(centroid_x <= int(width/2))and(centroid_y >= 0) and (centroid_y <= int(height)):
 			print("Cursor is at the left side")
+			# if -> up else -> down
+			if (int(height//2-rect_size)-centroid_y > 0):
+				if (int(width//4-rect_size)-centroid_x > 0):
+					# moving up-left
+					pyautogui.move(-10, -10)
+				elif (int(width//4+rect_size)-centroid_x < 0):
+					# moving up-right
+					pyautogui.move(10, -10)
+				else:
+					# or just up
+					pyautogui.move(0, -10)
+			elif (int(height//2+rect_size)-centroid_y < 0):
+				if (int(width//4-rect_size)-centroid_x > 0):
+					# moving down-left
+					pyautogui.move(-10, 10)
+				elif (int(width//4+rect_size)-centroid_x < 0):
+					# moving down-right
+					pyautogui.move(10, 10)
+				else:
+					# or just up
+					pyautogui.move(0, 10)
+			# if -> left else -> right
+			elif (int(width//4-rect_size)-centroid_x > 0):
+				if (int(height//2-rect_size)-centroid_y > 0):
+					# moving left-up
+					pyautogui.move(-10, -10)
+				elif (int(height//2+rect_size)-centroid_y < 0):
+					# moving left-down
+					pyautogui.move(-10, 10)
+				else:
+					# or just left
+					pyautogui.move(-10, 0)
+			elif (int(width//4+rect_size)-centroid_x < 0):
+				if (int(height//2-rect_size)-centroid_y > 0):
+					# moving right-up
+					pyautogui.move(10, -10)
+				elif (int(height//2+rect_size)-centroid_y < 0):
+					# moving right_left
+					pyautogui.move(10, 10)
+				else:
+					# or just right
+					pyautogui.move(10, 0)
+			
 		else:
 			print("Cursor is at the right side")
 	
@@ -91,6 +134,8 @@ while True:
 	cv2.rectangle(result, (0,0), (int(width/2),int(height)), frame_color, 1)
 	cv2.putText(result, "CLICK", (int(width*3//4-rect_size), int(height//2)), font, 2, frame_color, 3, cv2.LINE_AA) # adding text label for instructions
 	
+	cv2.putText(result, "Author: R. Brilenkov", (int(width*3//4-rect_size), int(height*6.5//7)), font, 0.7, frame_color, 1, cv2.LINE_AA) # adding text label for Author
+
 	# Showing the thresholded frame on the screen
 	cv2.imshow('result', result)
 	
