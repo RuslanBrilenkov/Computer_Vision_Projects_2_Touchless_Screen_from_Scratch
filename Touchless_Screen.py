@@ -11,8 +11,13 @@ cap = cv2.VideoCapture(0)
 ColorMin = np.array([35, 160, 0], dtype=np.uint8)
 ColorMax = np.array([85, 255, 255], dtype=np.uint8)
 
+ColorMin2 = np.array([100, 160, 0], dtype=np.uint8)
+ColorMax2 = np.array([120, 255, 255], dtype=np.uint8)
+
 # Defining centroid coordinates
 centroid_x, centroid_y = 0, 0
+centroid_x2, centroid_y2 = 0, 0
+
 # Defining the text font
 font = cv2.FONT_HERSHEY_SIMPLEX
 # Defining some helpful variables
@@ -39,8 +44,13 @@ while True:
 	hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	threshold = cv2.inRange(hsv, ColorMin, ColorMax)
 	contours, hierarchy = cv2.findContours(threshold, 1, 2)
+
+	threshold2 = cv2.inRange(hsv, ColorMin2, ColorMax2)
+	contours2, hierarchy2 = cv2.findContours(threshold2, 1, 2)
+
+	mask = threshold | threshold2
 	
-	result = cv2.bitwise_and(frame, frame, mask = threshold)
+	result = cv2.bitwise_and(frame, frame, mask = mask)
 
 	### Meat of the program is here   ###
 	try:
@@ -62,10 +72,30 @@ while True:
 		centroid_y = (y + y+h)//2
 
 		cv2.circle(result, (centroid_x, centroid_y), 2, (0,0,255), 10)
+
+		max_area2 = 0
+		last_x2 = centroid_x2
+		last_y2 = centroid_y2
+
+		if contours2:
+			for i in contours2:
+				area2 = cv2.contourArea(i)
+				if area2 > max_area2:
+					max_area2 = area2
+					cnt2 = i
+		#print(last_x2, last_y2, area2)
+		x2,y2,w2,h2 = cv2.boundingRect(cnt2)
+		cv2.rectangle(result, (x2,y2), (x2+w2,y2+h2), (255,0,0), 5)
+	
+		centroid_x2 = (x2 + x2+w2)//2
+		centroid_y2 = (y2 + y2+h2)//2
+
+		cv2.circle(result, (centroid_x2, centroid_y2), 2, (255,0,2), 10)
+		
 	
 		# Check if the centroid is withing the left half of the screen
 		if (centroid_x >= 0)and(centroid_x <= int(width/2))and(centroid_y >= 0) and (centroid_y <= int(height)):
-			print("Cursor is at the left side")
+			#print("Cursor is at the left side")
 			# if -> up else -> down
 			if (int(height//2-rect_size)-centroid_y > 0):
 				if (int(width//4-rect_size)-centroid_x > 0):
@@ -110,8 +140,19 @@ while True:
 					pyautogui.move(10, 0)
 			
 		else:
-			print("Cursor is at the right side")
-	
+			#print("Cursor is at the right side")
+			pass
+			
+		if (centroid_x2 >= int(width/2))and(centroid_x2 <= int(width))and(centroid_y2 >= 0) and (centroid_y2 <= int(height)):
+			if (int(width*3//4-rect_size)-centroid_x2 < 0)and(int(width*3//4+rect_size)-centroid_x2 > 0)and(int(height//2-rect_size)-centroid_y2 < 0)and(int(height//2+rect_size)-centroid_y2 > 0):
+				#print("CLICKING cursor is at the correct place!\n")
+				# Single click of the mouse with 0.25 second interval
+				pyautogui.click(button='left', clicks=1, interval=0.25)
+			else:
+				pass
+		else:
+			pass
+
 	except Exception as e:
 		print(e)
 	
