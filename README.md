@@ -1,4 +1,8 @@
 # Computer_Vision_Projects_2_Touchless_Screen_from_Scratch
+
+## Author: [Ruslan Brilenkov](https://www.linkedin.com/in/ruslan-brilenkov/)
+## [Original article](https://medium.datadriveninvestor.com/touchless-screen-application-from-scratch-with-python-ad65f82d9a62)
+
 This repository is dedicated to one of my computer vision projects for COVID-19. Precisely, building a touchless screen from scratch with Python. This logic can be used, in principle, in public places (train stations, ATMs, etc.) to avoid direct contact.
 
 
